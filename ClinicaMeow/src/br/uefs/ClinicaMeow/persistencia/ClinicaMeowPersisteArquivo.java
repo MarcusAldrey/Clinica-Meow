@@ -28,11 +28,11 @@ public class ClinicaMeowPersisteArquivo implements ClinicaMeowPersiste {
 			String bairro = endereco.getBairro();
 			String numero = "Nº " + endereco.getNumero();
 			String estado = endereco.getEstado();
-			gravarArq.printf(pessoa.getNome()+ ";\n"
-					+pessoa.getCPF()+ ";\n"
-					+pessoa.getDataDeNascimento()+ ";\n"
-					+pessoa.getTelefone()+ ";\n"
-					+ "Endereço: \n"
+			gravarArq.printf(pessoa.getNome()+ ";\r\n"
+					+pessoa.getCPF()+ ";\r\n"
+					+pessoa.getDataDeNascimento()+ ";\r\n"
+					+pessoa.getTelefone()+ ";\r\n"
+					+ "Endereço: \r\n"
 					+cidade+","
 					+bairro+","
 					+rua+";"
