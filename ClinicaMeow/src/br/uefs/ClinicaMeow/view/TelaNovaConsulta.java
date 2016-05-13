@@ -60,11 +60,12 @@ public class TelaNovaConsulta extends TelaCadastro {
 		JLabel label = new JLabel("Cpf do cliente:");
 		painel.add(label);
 		try {
-			cpfDoDono = new JFormattedTextField(new MaskFormatter("###.###.###-##            "));
+			cpfDoDono = new JFormattedTextField(new MaskFormatter("###.###.###-##"));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		cpfDoDono.setPreferredSize(new Dimension(100,20));
 		painel.add(cpfDoDono);
 
 		//Cria botão continuar
