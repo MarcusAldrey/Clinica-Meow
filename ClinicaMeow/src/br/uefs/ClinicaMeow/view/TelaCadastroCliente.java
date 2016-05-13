@@ -2,10 +2,12 @@ package br.uefs.ClinicaMeow.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.ParseException;
 
 import javax.swing.BorderFactory;
@@ -56,10 +58,11 @@ public class TelaCadastroCliente extends TelaCadastro {
 		label = new JLabel("CPF:");
 		painel.add(label);
 		try {
-			cpf = new JFormattedTextField(new MaskFormatter("###.###.###-##            "));
+			cpf = new JFormattedTextField(new MaskFormatter("###.###.###-##"));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		cpf.setPreferredSize(new Dimension(100,20));
 		painel.add(cpf);
 
 		//Cria campo sexo
@@ -73,22 +76,24 @@ public class TelaCadastroCliente extends TelaCadastro {
 		label = new JLabel("Data de Nascimento:");
 		painel.add(label);
 		try {
-			dataDeNascimento = new JFormattedTextField(new MaskFormatter("##/##/####          "));
+			dataDeNascimento = new JFormattedTextField(new MaskFormatter("##/##/####"));
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		dataDeNascimento.setPreferredSize(new Dimension(75,20));
 		painel.add(dataDeNascimento);
 
 		//cria campo de telefone
 		label = new JLabel("Telefone:");
 		painel.add(label);
 		try {
-			telefone = new JFormattedTextField(new MaskFormatter("(##)####-####            "));
+			telefone = new JFormattedTextField(new MaskFormatter("(##)####-####"));
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		telefone.setPreferredSize(new Dimension(85,20));
 		painel.add(telefone);
 		
 
@@ -152,6 +157,11 @@ public class TelaCadastroCliente extends TelaCadastro {
 										estado.getSelectedItem().toString(), cidade.getText(), bairro.getText(), rua.getText(), Integer.parseInt(NumdaCasa.getText()));
 			
 			Toolkit.getDefaultToolkit().beep();
+			try {
+				controller.salvarClientes();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso!");
 		}
 

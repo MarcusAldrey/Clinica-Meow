@@ -2,6 +2,7 @@ package br.uefs.ClinicaMeow.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -58,10 +59,11 @@ public class TelaCadastroAnimal extends TelaCadastro {
 		label = new JLabel("CPF do dono:");
 		painel.add(label);
 		try {
-			cpfDoDono = new JFormattedTextField(new MaskFormatter("###.###.###-##            "));
+			cpfDoDono = new JFormattedTextField(new MaskFormatter("###.###.###-##"));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		cpfDoDono.setPreferredSize(new Dimension(100,20));
 		painel.add(cpfDoDono);
 		
 		//cria campo de cor do Animal

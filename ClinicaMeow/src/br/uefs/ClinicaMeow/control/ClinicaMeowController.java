@@ -1,5 +1,6 @@
 package br.uefs.ClinicaMeow.control;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -13,10 +14,13 @@ import br.uefs.ClinicaMeow.model.Cliente;
 import br.uefs.ClinicaMeow.model.Consulta;
 import br.uefs.ClinicaMeow.model.Endereco;
 import br.uefs.ClinicaMeow.model.Veterinário;
+import br.uefs.ClinicaMeow.persistencia.ClinicaMeowPersiste;
+import br.uefs.ClinicaMeow.persistencia.ClinicaMeowPersisteArquivo;
 
 public class ClinicaMeowController {
 
 	private static ClinicaMeowController instance;
+	private static ClinicaMeowPersiste persistencia;
 	private List<Cliente> clientes;
 	private List<Veterinário> veterinarios; 
 	private List<Consulta> consultas; 
@@ -25,6 +29,7 @@ public class ClinicaMeowController {
 		clientes = new ArrayList<Cliente>();
 		veterinarios = new ArrayList<Veterinário>();
 		consultas = new ArrayList<Consulta>();
+		persistencia = new ClinicaMeowPersisteArquivo();
 	}
 
 	public static ClinicaMeowController getInstance() {
@@ -153,7 +158,20 @@ public class ClinicaMeowController {
 		return consultas;
 	}
 
-	public void salvarDados() {
-
+	public void salvarClientes() throws IOException {
+		persistencia.salvaClientes(clientes);
 	}
+	
+	public void salvarVeterinarios() throws IOException {
+		persistencia.salvaVeterinarios(veterinarios);
+	}
+	
+	public void salvarAnimais(Cliente c) throws IOException {
+		persistencia.salvaAnimais(c.getAnimais());		
+	}
+	
+	public void salvarConsultas() throws IOException {
+		persistencia.salvaConsultas(consultas);
+	}
+	
 }
