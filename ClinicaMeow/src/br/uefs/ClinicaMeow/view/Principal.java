@@ -25,8 +25,8 @@ public class Principal {
 		telaPrincipal.setSize(new Dimension(largura, altura));
 		telaPrincipal.setResizable(false);
 		telaPrincipal.setLocation(x, y);
-		//SplashScreen splash = new SplashScreen(5000);
-		//splash.mostrarSplashESair();
+		SplashScreen splash = new SplashScreen(5000);
+		splash.mostrarSplashESair();
 		telaPrincipal.setVisible(true);	
 	}
 
