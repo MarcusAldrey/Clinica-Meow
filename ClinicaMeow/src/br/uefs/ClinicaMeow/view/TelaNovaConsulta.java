@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Iterator;
@@ -109,9 +110,8 @@ public class TelaNovaConsulta extends TelaCadastro {
 		//cria campo preco da Consulta
 		NumberFormat longFormat = NumberFormat.getIntegerInstance();
 		NumberFormatter numberFormatter = new NumberFormatter(longFormat);
-		numberFormatter.setValueClass(Long.class); //optional, ensures you will always get a long value
-		numberFormatter.setAllowsInvalid(false); //this is the key!!
-		numberFormatter.setMinimum(0l); //Optional
+		numberFormatter.setValueClass(Long.class); 
+		numberFormatter.setAllowsInvalid(false);
 		labelPreco = new JLabel("Preço da consulta (R$):");
 		labelPreco.setVisible(false);
 		painel.add(labelPreco);
@@ -161,6 +161,11 @@ public class TelaNovaConsulta extends TelaCadastro {
 				JOptionPane.showMessageDialog(null, "O animal não está cadastrado no sistema!");
 				return;
 			}
+			try {
+				controller.salvarConsultas();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Nova consulta gerada com sucesso!");
 		}
@@ -174,7 +179,7 @@ public class TelaNovaConsulta extends TelaCadastro {
 			try {
 				cliente = controller.recuperarCliente(cpfDoDono.getText());
 			} catch (ClienteNaoEncontradoException e1) {
-				JOptionPane.showMessageDialog(null,"CPF inserido não pertence a um cliente cadastrado");
+				JOptionPane.showMessageDialog(null,"CPF inserido não pertence a um cliente cadastrado!");
 				return;
 			}
 			cpfDoDono.setEditable(false);
@@ -203,8 +208,8 @@ public class TelaNovaConsulta extends TelaCadastro {
 			texto.append("---NOVA CONSULTA---\n");
 			texto.append("\nNome do animal: " + animal.getSelectedItem().toString());
 			texto.append("\nVeterinário que atendeu: " + veterinario.getSelectedItem().toString());
-			texto.append("Nome do Dono: " + dono.getSelectedItem().toString());
-			texto.append("\nPreço da consulta: " + preco.getText());
+			texto.append("\nNome do Dono: " + dono.getSelectedItem().toString());
+			texto.append("\nPreço da consulta (R$): " + preco.getText());
 			visualizacao.add(texto, BorderLayout.CENTER);
 
 		}

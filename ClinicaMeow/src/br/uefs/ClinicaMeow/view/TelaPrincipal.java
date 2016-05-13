@@ -1,5 +1,7 @@
 package br.uefs.ClinicaMeow.view;
 
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -126,6 +128,9 @@ public class TelaPrincipal extends JFrame{
 
 		@Override
 		public void actionPerformed(ActionEvent evento) {
+			URL url = getClass().getResource("Gato.wav");
+			AudioClip audio = Applet.newAudioClip(url);
+			audio.play();
 			new TelaCadastroAnimal();
 		}
 	}

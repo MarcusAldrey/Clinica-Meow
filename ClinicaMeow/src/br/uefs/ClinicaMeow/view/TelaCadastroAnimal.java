@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.text.NumberFormat;
 import java.text.ParseException;
 
 import javax.swing.BorderFactory;
@@ -18,13 +20,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 
 import br.uefs.ClinicaMeow.exceptions.ClienteNaoEncontradoException;
 
 public class TelaCadastroAnimal extends TelaCadastro {
-	
+
 	private JTextField nome;
-	private JTextField idade;
+	private JFormattedTextField idade;
 	private JFormattedTextField cpfDoDono;
 	private JComboBox<String> especies;
 	private JTextField cor;
@@ -50,9 +53,14 @@ public class TelaCadastroAnimal extends TelaCadastro {
 		painel.add(nome);
 
 		//cria campo de idade do Animal
+		NumberFormat longFormat = NumberFormat.getIntegerInstance();
+		NumberFormatter numberFormatter = new NumberFormatter(longFormat);
+		numberFormatter.setValueClass(Long.class); 
+		numberFormatter.setAllowsInvalid(false);
 		label = new JLabel("Idade:");
 		painel.add(label);
-		idade = new JTextField(2);
+		idade = new JFormattedTextField(numberFormatter);
+		idade.setPreferredSize(new Dimension(30, 20));
 		painel.add(idade);
 
 		//Cria campo de CPF do dono
@@ -65,7 +73,7 @@ public class TelaCadastroAnimal extends TelaCadastro {
 		}
 		cpfDoDono.setPreferredSize(new Dimension(100,20));
 		painel.add(cpfDoDono);
-		
+
 		//cria campo de cor do Animal
 		label = new JLabel("   Cor:");
 		painel.add(label);
@@ -105,6 +113,14 @@ public class TelaCadastroAnimal extends TelaCadastro {
 			try {
 				controller.cadastrarAnimal(nome.getText(), especies.getSelectedItem().toString(), cor.getText(), Integer.parseInt(idade.getText()), cpfDoDono.getText());
 			} catch (NumberFormatException e1) {
+				e1.printStackTrace();
+			} catch (ClienteNaoEncontradoException e1) {
+				JOptionPane.showMessageDialog(null, "O dono do animal não está cadastrado no sistema!");
+				return;
+			}
+			try {
+				controller.salvarAnimais(controller.recuperarCliente(cpfDoDono.getText()));
+			} catch (IOException e1) {
 				e1.printStackTrace();
 			} catch (ClienteNaoEncontradoException e1) {
 				JOptionPane.showMessageDialog(null, "O dono do animal não está cadastrado no sistema!");

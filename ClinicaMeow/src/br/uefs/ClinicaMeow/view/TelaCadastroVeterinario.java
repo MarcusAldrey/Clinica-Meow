@@ -2,10 +2,12 @@ package br.uefs.ClinicaMeow.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.ParseException;
 
 import javax.swing.BorderFactory;
@@ -20,6 +22,7 @@ import javax.swing.text.MaskFormatter;
 
 import br.uefs.ClinicaMeow.control.ClinicaMeowController;
 import br.uefs.ClinicaMeow.model.Endereco;
+import br.uefs.ClinicaMeow.model.Veterinário;
 
 public class TelaCadastroVeterinario extends TelaCadastro {
 
@@ -59,10 +62,11 @@ public class TelaCadastroVeterinario extends TelaCadastro {
 		label = new JLabel("CPF:");
 		painel.add(label);
 		try {
-			cpf = new JFormattedTextField(new MaskFormatter("###.###.###-##            "));
+			cpf = new JFormattedTextField(new MaskFormatter("###.###.###-##"));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		cpf.setPreferredSize(new Dimension(100,20));
 		painel.add(cpf);
 
 		//Cria campo sexo
@@ -76,11 +80,12 @@ public class TelaCadastroVeterinario extends TelaCadastro {
 		label = new JLabel("Data de Nascimento:");
 		painel.add(label);
 		try {
-			dataDeNascimento = new JFormattedTextField(new MaskFormatter("##/##/####          "));
+			dataDeNascimento = new JFormattedTextField(new MaskFormatter("##/##/####"));
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		dataDeNascimento.setPreferredSize(new Dimension(75,20));
 		painel.add(dataDeNascimento);
 
 		//Cria campo de crmv
@@ -93,11 +98,12 @@ public class TelaCadastroVeterinario extends TelaCadastro {
 		label = new JLabel("Telefone:");
 		painel.add(label);
 		try {
-			telefone = new JFormattedTextField(new MaskFormatter("(##)####-####            "));
+			telefone = new JFormattedTextField(new MaskFormatter("(##)####-####"));
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		telefone.setPreferredSize(new Dimension(85,20));
 		painel.add(telefone);
 
 
@@ -158,8 +164,18 @@ public class TelaCadastroVeterinario extends TelaCadastro {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			for(Veterinário v : controller.getVeterinarios())
+				if(v.getCPF().equals(cpf.getText())) {
+					JOptionPane.showMessageDialog(null, "Já existe veterinário cadastrado com essse CPF no sistema!");
+					return;
+				}
 			controller.cadastrarVeterinario(nome.getText(), cpf.getText(), sexo.getSelectedItem().toString(), dataDeNascimento.getText(), telefone.getText(), 
 					crmv.getText(), estado.getSelectedItem().toString(), cidade.getText(), bairro.getText(), rua.getText(), Integer.parseInt(NumdaCasa.getText()));
+			try {
+				controller.salvarVeterinarios();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Veterinário cadastrado com sucesso!");
 		}
@@ -173,6 +189,7 @@ public class TelaCadastroVeterinario extends TelaCadastro {
 			criarTelaDeVisualizacao();
 			JTextArea texto = new JTextArea();
 			texto.setBackground(Color.CYAN);
+			texto.append("---NOVO VETERINÁRIO---\n");
 			texto.append("Nome do Veterinário: " + nome.getText());
 			texto.append("\nSexo: " + sexo.getSelectedItem());
 			texto.append("\nCPF: " + cpf.getText());

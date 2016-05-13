@@ -24,36 +24,40 @@ public class ClinicaMeowPersisteArquivo implements ClinicaMeowPersiste {
 			Pessoa pessoa = (Pessoa)itr.next();
 			Endereco endereco = pessoa.getEndereco();
 			String rua = "Rua " + endereco.getRua();
-			String cidade = endereco.getEstado();
+			String cidade = endereco.getCidade();
 			String bairro = endereco.getBairro();
 			String numero = "Nº " + endereco.getNumero();
 			String estado = endereco.getEstado();
-			gravarArq.printf(pessoa.getNome()+ ";\n"
-					+pessoa.getCPF()+ ";\n"
-					+pessoa.getDataDeNascimento()+ ";\n"
-					+pessoa.getTelefone()+ ";\n"
-					+ "Endereço: \n"
+			gravarArq.printf("\n" + pessoa.getNome()+ ";\r\n"
+					+"CPF: " + pessoa.getCPF()+ ";\r\n"
+					+"Data de Nascimento: " + pessoa.getDataDeNascimento()+ ";\r\n"
+					+"Tel: " + pessoa.getTelefone()+ ";\r\n"
+					+ "Endereço: "
 					+cidade+","
 					+bairro+","
-					+rua+";"
+					+rua+","
 					+numero+", "
-					+estado+";\n");
+					+estado+";\r\n"
+					+"/////////////////////////////////////////////\r\n");
 		} 
 		arq.close();
 	}
 
 	@Override
-	public void salvaAnimais(List<Animal> animais) throws IOException {
+	public void salvaAnimais(List<Cliente> clientes) throws IOException {
 		FileWriter arq = new FileWriter("Animais.txt");
 		PrintWriter gravarArq = new PrintWriter(arq);
-		Iterator<Animal> itr = animais.iterator();
-		while(itr.hasNext()) { 
-			Animal animal = (Animal)itr.next();
-			gravarArq.printf(animal.getNome() + "\n"
-					+animal.getTipo()+ "\n"
-					+animal.getCor()+ "\n"
-					+animal.getIdade() + "anos" + "\n"
-					+"Dono: " + animal.getNome() + ";\n");
+		for(Cliente c : clientes) {
+			Iterator<Animal> itr = c.getAnimais().iterator();
+			gravarArq.printf("Animais de " + c.getNome() + "\r\n");
+			while(itr.hasNext()) { 
+				Animal animal = (Animal)itr.next();
+				gravarArq.printf("\r\nNome: " + animal.getNome() + "\r\n"
+						+"Espécie: " + animal.getTipo()+ "\r\n"
+						+"Cor: " + animal.getCor()+ "\r\n"
+						+"Idade: " + animal.getIdade() + " anos" + "\r\n");
+			}
+			gravarArq.printf("////////////////////////////////////////\r\n");
 		}
 		arq.close();
 	}
@@ -65,12 +69,13 @@ public class ClinicaMeowPersisteArquivo implements ClinicaMeowPersiste {
 		Iterator<Consulta> itr = consultas.iterator();
 		while(itr.hasNext()) { 
 			Consulta consulta = (Consulta)itr.next();
-			gravarArq.printf("Número da consulta: " + consulta.getId() + "\n"
-					+ "Horário: " + consulta.getData()+ "\n"
-					+ "Veterinario: " + consulta.getVeterinario()+ "\n"
-					+ "Cliente: " + consulta.getCliente()+ "\n"
-					+ "Animal atendido: " + consulta.getAnimal()+ "\n"
-					+ "Valor da consulta: " + consulta.getPreco() + "\n");
+			gravarArq.printf("Número da consulta: " + consulta.getId() + "\r\n"
+					+ "Horário: " + consulta.getData()+ "\r\n"
+					+ "Veterinario: " + consulta.getVeterinario()+ "\r\n"
+					+ "Cliente: " + consulta.getCliente()+ "\r\n"
+					+ "Animal atendido: " + consulta.getAnimal()+ "\r\n"
+					+ "Valor da consulta (R$): " + consulta.getPreco() + "\r\n"
+					+"/////////////////////////////////////////////\r\n");
 		}
 		arq.close();
 	}
@@ -83,24 +88,25 @@ public class ClinicaMeowPersisteArquivo implements ClinicaMeowPersiste {
 		while(itr.hasNext()) { 
 			Veterinário pessoa = itr.next();
 			Endereco endereco = pessoa.getEndereco();
-			String rua = "Rua: " + endereco.getRua();
-			String cidade = "Cidade: " + endereco.getEstado();
+			String rua = "Rua " + endereco.getRua();
+			String cidade = endereco.getCidade();
 			String bairro = endereco.getBairro();
 			String numero = "Nº " + endereco.getNumero();
 			String estado = endereco.getEstado();
-			gravarArq.printf(pessoa.getNome()+ "\n"
-					+pessoa.getCPF()+ "\n"
-					+pessoa.getDataDeNascimento()+ "\n"
-					+pessoa.getTelefone()+ "\n"
+			gravarArq.printf("\n" + pessoa.getNome()+ ";\r\n"
+					+"CPF: " + pessoa.getCPF()+ ";\r\n"
+					+"Data de Nascimento: " + pessoa.getDataDeNascimento()+ ";\r\n"
+					+"Tel: " + pessoa.getTelefone()+ ";\r\n"
 					+ "Endereço: "
 					+cidade+","
 					+bairro+","
-					+"Rua "+ rua+";"
-					+"Nº " + numero+", "
-					+estado+";"
-					+ "CRMV: " + pessoa.getCrmv() + ";\n");
+					+rua+";"
+					+numero+", "
+					+estado+";\r\n"
+					+ "CRMV: " + pessoa.getCrmv() + ";\r\n"
+					+"/////////////////////////////////////////////\r\n");
 		}
 		arq.close();
 	} 
-	
+
 }

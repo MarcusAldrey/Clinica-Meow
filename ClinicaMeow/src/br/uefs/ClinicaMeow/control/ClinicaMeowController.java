@@ -167,7 +167,7 @@ public class ClinicaMeowController {
 	}
 	
 	public void salvarAnimais(Cliente c) throws IOException {
-		persistencia.salvaAnimais(c.getAnimais());		
+		persistencia.salvaAnimais(clientes);		
 	}
 	
 	public void salvarConsultas() throws IOException {

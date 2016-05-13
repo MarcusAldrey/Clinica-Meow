@@ -20,6 +20,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
+import br.uefs.ClinicaMeow.model.Cliente;
 import br.uefs.ClinicaMeow.model.Endereco;
 
 public class TelaCadastroCliente extends TelaCadastro {
@@ -78,7 +79,6 @@ public class TelaCadastroCliente extends TelaCadastro {
 		try {
 			dataDeNascimento = new JFormattedTextField(new MaskFormatter("##/##/####"));
 		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		dataDeNascimento.setPreferredSize(new Dimension(75,20));
@@ -90,7 +90,6 @@ public class TelaCadastroCliente extends TelaCadastro {
 		try {
 			telefone = new JFormattedTextField(new MaskFormatter("(##)####-####"));
 		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		telefone.setPreferredSize(new Dimension(85,20));
@@ -153,9 +152,13 @@ public class TelaCadastroCliente extends TelaCadastro {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			for(Cliente c : controller.getClientes())
+				if(c.getCPF().equals(cpf.getText())) {
+					JOptionPane.showMessageDialog(null, "Já existe cliente cadastrado com esse CPF no sistema!");
+					return;
+				}
 			controller.cadastrarCliente(nome.getText(), cpf.getText(), sexo.getSelectedItem().toString(), dataDeNascimento.getText(), telefone.getText(), 
 										estado.getSelectedItem().toString(), cidade.getText(), bairro.getText(), rua.getText(), Integer.parseInt(NumdaCasa.getText()));
-			
 			Toolkit.getDefaultToolkit().beep();
 			try {
 				controller.salvarClientes();
@@ -174,6 +177,7 @@ public class TelaCadastroCliente extends TelaCadastro {
 			criarTelaDeVisualizacao();
 			JTextArea texto = new JTextArea();
 			texto.setBackground(Color.CYAN);
+			texto.append("---NOVO CLIENTE---\n");
 			texto.append("Nome do cliente: " + nome.getText());
 			texto.append("\nSexo: " + sexo.getSelectedItem());
 			texto.append("\nCPF: " + cpf.getText());
