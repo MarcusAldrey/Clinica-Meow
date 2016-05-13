@@ -7,8 +7,9 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
@@ -21,9 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
-import javax.swing.text.NumberFormatter;
-
 import br.uefs.ClinicaMeow.exceptions.AnimalNaoEncontradoException;
 import br.uefs.ClinicaMeow.exceptions.ClienteNaoEncontradoException;
 import br.uefs.ClinicaMeow.exceptions.VeterinarioNaoEncontradoException;
@@ -38,7 +38,7 @@ public class TelaNovaConsulta extends TelaCadastro {
 	private JComboBox<Cliente> dono;
 	private JComboBox<Animal> animal;
 	private JComboBox<Veterinário> veterinario;
-	private JFormattedTextField preco;
+	private JTextField preco;
 	private JLabel labelDono;
 	private JLabel labelVet;
 	private JLabel labelAnimal;
@@ -108,16 +108,22 @@ public class TelaNovaConsulta extends TelaCadastro {
 		painel.add(veterinario);
 
 		//cria campo preco da Consulta
-		NumberFormat longFormat = NumberFormat.getIntegerInstance();
-		NumberFormatter numberFormatter = new NumberFormatter(longFormat);
-		numberFormatter.setValueClass(Long.class); 
-		numberFormatter.setAllowsInvalid(false);
 		labelPreco = new JLabel("Preço da consulta (R$):");
 		labelPreco.setVisible(false);
 		painel.add(labelPreco);
-		preco = new JFormattedTextField(numberFormatter);
+		preco = new JTextField();
 		preco.setPreferredSize(new Dimension(50, 20));
 		preco.setVisible(false);
+		preco.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				char c = arg0.getKeyChar();
+
+				if(!(Character.isDigit(c)|| c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE )){
+					arg0.consume();
+				}
+			}
+		});
 		painel.add(preco);
 
 		janela.add(painel);
@@ -128,7 +134,6 @@ public class TelaNovaConsulta extends TelaCadastro {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
 			cpfDoDono.setText("");
 			preco.setText("");
 			dono.setSelectedIndex(0);
@@ -182,11 +187,11 @@ public class TelaNovaConsulta extends TelaCadastro {
 				JOptionPane.showMessageDialog(null,"CPF inserido não pertence a um cliente cadastrado!");
 				return;
 			}
-			cpfDoDono.setEditable(false);
 			dono.setVisible(true);
 			dono.setSelectedItem(cliente);
 			veterinario.setVisible(true);
 			animal.setVisible(true);
+			animal.removeAllItems();
 			Iterator<Animal> iterador = cliente.getAnimais().iterator();
 			while(iterador.hasNext())
 				animal.addItem(iterador.next());

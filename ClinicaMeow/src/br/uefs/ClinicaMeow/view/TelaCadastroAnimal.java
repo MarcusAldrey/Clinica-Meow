@@ -7,8 +7,9 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.text.NumberFormat;
 import java.text.ParseException;
 
 import javax.swing.BorderFactory;
@@ -20,14 +21,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
-import javax.swing.text.NumberFormatter;
-
 import br.uefs.ClinicaMeow.exceptions.ClienteNaoEncontradoException;
 
 public class TelaCadastroAnimal extends TelaCadastro {
 
 	private JTextField nome;
-	private JFormattedTextField idade;
+	private JTextField idade;
 	private JFormattedTextField cpfDoDono;
 	private JComboBox<String> especies;
 	private JTextField cor;
@@ -53,13 +52,19 @@ public class TelaCadastroAnimal extends TelaCadastro {
 		painel.add(nome);
 
 		//cria campo de idade do Animal
-		NumberFormat longFormat = NumberFormat.getIntegerInstance();
-		NumberFormatter numberFormatter = new NumberFormatter(longFormat);
-		numberFormatter.setValueClass(Long.class); 
-		numberFormatter.setAllowsInvalid(false);
 		label = new JLabel("Idade:");
 		painel.add(label);
-		idade = new JFormattedTextField(numberFormatter);
+		idade = new JTextField();
+		idade.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				char c = arg0.getKeyChar();
+
+				if(!(Character.isDigit(c)|| c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE )){
+					arg0.consume();
+				}
+			}
+		});
 		idade.setPreferredSize(new Dimension(30, 20));
 		painel.add(idade);
 
